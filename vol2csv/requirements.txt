@@ -1,0 +1,5 @@
+numpy
+lxml
+requests
+simplejson
+git+https://github.com/dbenders/radstore_client

@@ -44,7 +44,6 @@ def build_def(fname):
 			sys.exit(-1)
 	elif ans.ext == 'txt':
 		typ = 'csv.latlon'
-		fn = 
 		m = re.match('(?P<ts>.{14})00(?P<var>.+)\.vol_(?P<slice>[0-9]+)\.txt',ans.fname)
 		if m is None:
 			print "No puedo interpretar el archivo %s" % ans.fname
@@ -62,7 +61,7 @@ def build_def(fname):
 	ans.type = typ
 	return ans
 
-	
+
 def upload_files(*fnames):
 	filedefs = []
 	for fname in fnames:
@@ -84,25 +83,24 @@ def upload_files(*fnames):
 		if radstore_client.Product.query().filter(name=fdef.fname).count() > 0:
 			print "\tYA EXISTE"
 			continue
-		
+
 		prod = radstore_client.Product()
 		prod.name = fdef.fname
 		prod.type = fdef.type
 		prod.datetime = fdef.datetime
 		prod.variable = fdef.variable
 		if hasattr(fdef,'slice'): prod.slice = fdef.slice
-		try:
-			prod.save()
-			prod.content = open(fdef.path).read()
-			prod.save_content()
-			print "\tOK"
-		except:
-			print "\tERROR"
+		# try:
+		prod.content = open(fdef.path).read()
+		prod.save()
+		print "\tOK"
+		# except:
+		# 	print "\tERROR"
 
 	print "\nListo!\n"
 
 def main():
-	if len(sys.argv) < 2: 
+	if len(sys.argv) < 2:
 		usage()
 		sys.exit(1)
 
