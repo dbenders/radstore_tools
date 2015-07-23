@@ -335,10 +335,16 @@ def main():
 		prod = radstore_client.Product.get(args['id'])
 		convert(prod)
 	elif 'query' in args:
-		q = json.loads(args['query'])
+		q = simplejson.loads(args['query'])
 		for prod in radstore_client.Product.query().filter(type='vol', **q).all():
-			print "convert to csv: %s" % prod._id
-			convert(prod)
+			if radstore_client.Product.query().filter(datetime=prod.datetime, variable=prod.variable,type='vol.slice:latlon:csv').exists():
+				print "\texists"
+				continue
+			try:
+				print "convert to csv: %s" % prod._id
+				convert(prod)
+			except KeyboardInterrupt: return
+			except: pass
 
 # Cuerpo principal del Script
 if __name__ == '__main__':
